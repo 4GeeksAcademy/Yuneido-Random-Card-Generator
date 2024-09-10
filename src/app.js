@@ -7,22 +7,38 @@ import "./assets/img/4geeks.ico";
 
 const SHAPES = ["♦", "♥", "♠", "♣"];
 
+const randomShape = (arr) => {
+  const index = getRandomIndex(arr.length);
+  return arr[index];
+};
+
+function getRandomIndex(length) {
+  return Math.floor(Math.random() * length);
+}
+
 window.onload = function() {
   //write your code here
   document
     .getElementById("generatorButton")
     .addEventListener("click", generateCard);
   generateCard();
-  console.log("Hello Rigo from the console!");
+
+  let segundos = 10;
+
+  const contador = setInterval(() => {
+    document.getElementById("temporizador").innerText = segundos;
+
+    segundos--;
+
+    if (segundos < 0) {
+      generateCard();
+      segundos = 10;
+    }
+  }, 1000);
 };
 
-const randomShape = arr => {
-  return arr[getCardValueOrShapeIndex(arr.length)];
-};
-
-function getCardValueOrShapeIndex(length = 13) {
-  if (length === 4) return Math.floor(Math.random() * length);
-  let num = Math.floor(Math.random() * length) + 1;
+function getCardValue() {
+  const num = Math.floor(Math.random() * 13) + 1;
   switch (num) {
     case 1:
       return "A";
@@ -38,25 +54,12 @@ function getCardValueOrShapeIndex(length = 13) {
 }
 
 function generateCard() {
-  document.getElementById("valor").innerText = getCardValueOrShapeIndex();
+  document.getElementById("valor").innerText = getCardValue();
   let divFiguras = document.querySelectorAll(".figura");
   let figuraRandom = randomShape(SHAPES);
 
-  divFiguras.forEach(fig => {
+  divFiguras.forEach((fig) => {
     fig.innerText = figuraRandom;
     fig.style.color = SHAPES.indexOf(figuraRandom) < 2 ? "red" : "black";
   });
 }
-
-let segundos = 10;
-
-const contador = setInterval(() => {
-  document.getElementById("temporizador").innerText = segundos;
-
-  segundos--;
-
-  if (segundos < 0) {
-    generateCard();
-    segundos = 10;
-  }
-}, 1000);
